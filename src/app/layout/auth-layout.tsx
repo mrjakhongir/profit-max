@@ -1,6 +1,5 @@
 import { paths } from "@/shared/routes";
 import { supabaseClient } from "@/supabase-client";
-import Header from "@/widgets/header/ui/header";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
@@ -28,7 +27,6 @@ export const AuthLayout = () => {
 
   return (
     <div>
-      <Header />
       <Outlet />
     </div>
   );
