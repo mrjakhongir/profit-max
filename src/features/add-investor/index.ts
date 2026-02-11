@@ -1,0 +1,1 @@
+export { AddInvestor } from "./ui";

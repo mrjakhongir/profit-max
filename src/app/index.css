@@ -129,6 +129,24 @@
 }
 
 .glass-bg {
-  background-color: rgba(241, 241, 241, 0.6);
+  background-color: rgba(240, 240, 240, 0.6);
   backdrop-filter: blur(1px);
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }

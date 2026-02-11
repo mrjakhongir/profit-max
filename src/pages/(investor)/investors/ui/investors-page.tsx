@@ -1,6 +1,7 @@
 import { Header } from "@/widgets/header";
 import { Tabs } from "@/widgets/tabs";
 import { tabs } from "../model/constants";
+import AddInvestorButton from "./add-investor-button";
 import List from "./list";
 
 const InvestorsPage = () => {
@@ -21,10 +22,9 @@ const InvestorsPage = () => {
       </>
 
       <Header title="Investors" />
-
       <Tabs items={tabs} />
-
       <List />
+      <AddInvestorButton />
     </div>
   );
 };
