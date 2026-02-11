@@ -1,4 +1,5 @@
-import InvestorsPage from "@/pages/investors/investors-page";
+import InvestorDetailsPage from "@/pages/(investor)/details/ui/investor-details-page";
+import InvestorsPage from "@/pages/(investor)/investors/ui/investors-page";
 import TransactionsPage from "@/pages/transactions/transactions-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "../../pages/home/home";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         children: [
           { path: paths.home, element: <HomePage /> },
           { path: paths.investors, element: <InvestorsPage /> },
+          { path: paths.investorDetails, element: <InvestorDetailsPage /> },
           { path: paths.transactions, element: <TransactionsPage /> },
         ],
       },

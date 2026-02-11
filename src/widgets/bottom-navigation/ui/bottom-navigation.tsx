@@ -1,6 +1,7 @@
 import Container from "@/shared/ui/custom/container";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { allowedPaths } from "../model/constants";
 import { navItems } from "../model/nav-item";
 
 export const BottomNavigation = () => {
@@ -10,11 +11,13 @@ export const BottomNavigation = () => {
     () => navItems.findIndex((item) => item.route === location.pathname),
     [location.pathname],
   );
-
+  console.log(location);
   return (
-    <div className="fixed right-0 bottom-0 left-0">
+    <div
+      className={`fixed right-0 bottom-0 left-0 ${allowedPaths.includes(location.pathname) ? "block" : "hidden"}`}
+    >
       <Container>
-        <ul className="relative flex items-center justify-between rounded-full border p-1">
+        <ul className="glass-bg relative flex items-center justify-between rounded-full p-1">
           {/* Sliding Background */}
           <div
             className="bg-primary absolute top-1 bottom-1 left-1 rounded-full transition-transform duration-300 ease-in-out"
