@@ -1,5 +1,11 @@
+import { Header } from "@/widgets/header";
+
 const TransactionsPage = () => {
-  return <div>TransactionsPage</div>;
+  return (
+    <div>
+      <Header title="Transactions" />
+    </div>
+  );
 };
 
 export default TransactionsPage;

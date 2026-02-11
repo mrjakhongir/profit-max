@@ -14,7 +14,7 @@ export const BottomNavigation = () => {
   return (
     <div className="fixed right-0 bottom-0 left-0">
       <Container>
-        <ul className="relative flex items-center justify-between rounded-full border p-1 shadow-md">
+        <ul className="relative flex items-center justify-between rounded-full border p-1">
           {/* Sliding Background */}
           <div
             className="bg-primary absolute top-1 bottom-1 left-1 rounded-full transition-transform duration-300 ease-in-out"
@@ -28,7 +28,7 @@ export const BottomNavigation = () => {
             <li key={item.name} className="flex-1">
               <Link
                 to={item.route}
-                className={`relative z-10 flex items-center justify-center rounded-full p-4 ${
+                className={`relative z-10 flex items-center justify-center rounded-full p-3 ${
                   location.pathname === item.route
                     ? "text-background"
                     : "text-muted-foreground"

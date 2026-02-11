@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export const AppLayout = () => {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-white min-h-screen">
       <Outlet />
       <Toaster position="top-center" duration={5000} />
     </div>
