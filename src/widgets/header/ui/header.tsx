@@ -6,7 +6,7 @@ type Properties = {
 
 export const Header: React.FC<Properties> = ({ title }) => {
   return (
-    <div className="border-b">
+    <div className="relative z-20 border-b">
       <Container className="py-3">
         <h1 className="text-primary text-center font-mono text-xl font-semibold">
           {title}

@@ -11,13 +11,12 @@ export const BottomNavigation = () => {
     () => navItems.findIndex((item) => item.route === location.pathname),
     [location.pathname],
   );
-  console.log(location);
   return (
     <div
-      className={`fixed right-0 bottom-0 left-0 ${allowedPaths.includes(location.pathname) ? "block" : "hidden"}`}
+      className={`fixed right-0 bottom-0 left-0 mb-2 ${allowedPaths.includes(location.pathname) ? "block" : "hidden"}`}
     >
       <Container>
-        <ul className="glass-bg relative flex items-center justify-between rounded-full p-1">
+        <ul className="glass-bg relative z-20 flex items-center justify-between rounded-full p-1">
           {/* Sliding Background */}
           <div
             className="bg-primary absolute top-1 bottom-1 left-1 rounded-full transition-transform duration-300 ease-in-out"
@@ -43,6 +42,12 @@ export const BottomNavigation = () => {
           ))}
         </ul>
       </Container>
+
+      <img
+        src="/mask-left.png"
+        alt="mask"
+        className="absolute -bottom-5 left-0 z-10"
+      />
     </div>
   );
 };
