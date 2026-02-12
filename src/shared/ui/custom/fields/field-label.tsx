@@ -2,12 +2,16 @@ import { FieldLabel } from "../../field";
 
 type FieldLabelProperties = {
   content: string;
+  required?: boolean;
 };
 
-const Label: React.FC<FieldLabelProperties> = ({ content }) => {
+const Label: React.FC<FieldLabelProperties> = ({
+  content,
+  required = true,
+}) => {
   return (
-    <FieldLabel className="w-1/2 justify-end text-end text-lg">
-      {content}
+    <FieldLabel>
+      {content} {required && <span className="text-destructive">*</span>}
     </FieldLabel>
   );
 };

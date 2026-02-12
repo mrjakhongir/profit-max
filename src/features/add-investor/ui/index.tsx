@@ -4,7 +4,7 @@ import { Button } from "@/shared/ui/button";
 import CardNumberInput from "@/shared/ui/custom/card-number-input";
 import Container from "@/shared/ui/custom/container";
 import DatePicker from "@/shared/ui/custom/date-picker";
-import FormFieldGroup from "@/shared/ui/custom/form-field";
+import FormFieldGroup from "@/shared/ui/custom/fields/form-field-group";
 import IDInputMask from "@/shared/ui/custom/id-number-input";
 import {
   Field,
@@ -72,7 +72,7 @@ export const AddInvestor = () => {
       <Container>
         <form onSubmit={handleSubmit(addNewInvestor)}>
           <FieldGroup className="glass-bg border-accent/10 relative z-30 gap-3 rounded-xl border p-4">
-            <FormFieldGroup
+            <FormFieldGroup<AddInvestorValues>
               form={form}
               label="Fullname"
               name="name"
@@ -161,7 +161,7 @@ export const AddInvestor = () => {
               </FieldDescription>
             </Field>
 
-            <FormFieldGroup
+            <FormFieldGroup<AddInvestorValues>
               form={form}
               label="Investment amount"
               name="amount"
@@ -170,7 +170,7 @@ export const AddInvestor = () => {
               icon={HandCoins}
             />
 
-            <FormFieldGroup
+            <FormFieldGroup<AddInvestorValues>
               form={form}
               label="Interest rate"
               name="interest_rate"

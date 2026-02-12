@@ -10,7 +10,7 @@ const ListItem: React.FC<Properties> = ({ item }) => {
   return (
     <li className="border-b py-2">
       <Link
-        to="/investors/1"
+        to={`/investors/${item.id}`}
         className="flex items-center justify-between gap-2"
       >
         <div className="flex flex-1 items-center justify-between gap-5">
