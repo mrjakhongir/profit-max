@@ -12,7 +12,7 @@ export const Header: React.FC<Properties> = ({
   hasBackButton = false,
 }) => {
   return (
-    <div className="relative z-20 border-b">
+    <div className="sticky top-0 z-30 border-b bg-white">
       <Container className="flex items-center py-3">
         {hasBackButton && (
           <Link to=".." relative="path" className="rounded-md px-1 py-0.5">

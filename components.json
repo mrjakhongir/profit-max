@@ -19,7 +19,5 @@
     "lib": "@/shared/lib",
     "hooks": "@/shared/hooks"
   },
-  "registries": {
-    "@ss-components": "https://registry.shadcn.studio"
-  }
+  "registries": {}
 }

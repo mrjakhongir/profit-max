@@ -1,30 +1,31 @@
 import Container from "@/shared/ui/custom/container";
+import RectangleGradient from "@/shared/ui/custom/rectangle-gradient";
 
 export const Balance = () => {
   return (
     <div className="relative">
       <Container>
-        <div className="glass-bg border-accent/10 relative z-20 rounded-3xl border">
-          <div className="rounded-3xl bg-[url('../../../../public/bg-gradient.png')] bg-cover bg-no-repeat p-5">
+        <div className="glass-bg border-accent/10 relative z-20 overflow-hidden rounded-2xl border">
+          <RectangleGradient>
             <p className="text-secondary text-md mb-3">Total balance</p>
             <h2 className="text-background font-mono text-3xl font-semibold">
-              $16,500.80
+              $34,800.00
             </h2>
-          </div>
+          </RectangleGradient>
 
-          <div className="flex px-5 py-3">
+          <div className="flex px-4 py-3">
             <div className="flex-1">
               <p className="text-muted-foreground text-sm font-semibold">
                 Invested
               </p>
-              <h3 className="text-primary font-medium">$10,000.00</h3>
+              <h3 className="text-primary font-medium">$30,000.00</h3>
             </div>
 
             <div className="flex-1">
               <p className="text-muted-foreground text-sm font-semibold">
                 Earned
               </p>
-              <h3 className="text-primary font-medium">$1,200.00</h3>
+              <h3 className="text-primary font-medium">$4,800.00</h3>
             </div>
           </div>
         </div>
