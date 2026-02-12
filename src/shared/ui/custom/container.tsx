@@ -6,7 +6,7 @@ type Properties = {
 
 const Container: React.FC<Properties> = ({ children, className }) => {
   return (
-    <div className={cn("mx-auto w-full max-w-340 px-4", className)}>
+    <div className={cn("mx-auto w-full max-w-140 px-4", className)}>
       {children}
     </div>
   );

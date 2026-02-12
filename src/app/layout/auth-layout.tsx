@@ -1,7 +1,7 @@
 import { paths } from "@/shared/routes";
+import LoaderCenter from "@/shared/ui/custom/loader";
 import { supabaseClient } from "@/supabase-client";
 import { BottomNavigation } from "@/widgets/bottom-navigation";
-import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
@@ -17,9 +17,7 @@ export const AuthLayout = () => {
   }, []);
 
   if (loading) {
-    return (
-      <Loader2 className="text-primary mx-auto mt-20 animate-spin" size={40} />
-    );
+    return <LoaderCenter />;
   }
 
   if (!isAuthed) {

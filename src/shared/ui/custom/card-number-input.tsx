@@ -16,7 +16,7 @@ const CardNumberInput = forwardRef<HTMLInputElement, Properties>(
 
     return (
       <div className="w-full">
-        <InputGroup>
+        <InputGroup className="bg-white">
           <InputGroupInput
             id={id}
             type="text"
@@ -32,6 +32,7 @@ const CardNumberInput = forwardRef<HTMLInputElement, Properties>(
               if (typeof reference === "function") reference(element);
               else if (reference) reference.current = element;
             }}
+            autoComplete="off"
           />
 
           <InputGroupAddon align="inline-end">
