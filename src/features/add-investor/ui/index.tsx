@@ -1,4 +1,3 @@
-import { useAuth } from "@/features/auth/hooks/use-auth";
 import { cn } from "@/shared/lib/utilities";
 import { Button } from "@/shared/ui/button";
 import CardNumberInput from "@/shared/ui/custom/card-number-input";
@@ -15,6 +14,7 @@ import {
 import { Textarea } from "@/shared/ui/textarea";
 import { supabaseClient } from "@/supabase-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { HandCoins, Loader2, Percent, UserRoundPlus } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +24,8 @@ import { defaultValues } from "../model/constants";
 import { investorSchema, type AddInvestorValues } from "../model/schema";
 
 export const AddInvestor = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<AddInvestorValues>({
     resolver: zodResolver(investorSchema),
@@ -42,29 +42,27 @@ export const AddInvestor = () => {
   } = form;
 
   const addNewInvestor = async (values: AddInvestorValues) => {
-    if (!user) {
-      toast.error("First sign in to your account");
-      return;
-    }
-
-    const { error } = await supabaseClient
-      .from("investors")
-      .insert({
-        ...values,
-        card_number: maskCardNumber(values.card_number),
-        user_id: user.id,
-      })
-      .select()
-      .single();
+    const { error } = await supabaseClient.rpc(
+      "create_investor_with_initial_deposit",
+      {
+        p_name: values.name,
+        p_id_number: values.id_number,
+        p_contract_date: values.contract_date.toISOString().split("T")[0],
+        p_interest_rate: values.interest_rate,
+        p_card_number: maskCardNumber(values.card_number),
+        p_amount: values.amount,
+        p_description: values.description || "",
+      },
+    );
 
     if (error) {
       toast.error(error.message);
-      console.error(error);
+      return;
     }
-
     toast.success("Investor created successfully 🎉");
     reset();
     navigate("/investors");
+    queryClient.invalidateQueries({ queryKey: ["investors"] });
   };
 
   return (

@@ -87,8 +87,8 @@ export const MakeDeposit = () => {
         </DialogHeader>
 
         <form onSubmit={handleSubmit(createDeposit)}>
-          <FieldGroup className="gap-4">
-            <Field data-invalid={!!errors.date}>
+          <FieldGroup className="gap-3">
+            <Field data-invalid={!!errors.date} className="gap-1">
               <Label content="Deposit date" />
 
               <Controller
@@ -107,25 +107,23 @@ export const MakeDeposit = () => {
               </FieldDescription>
             </Field>
 
-            <div className="flex gap-2">
-              <FormFieldGroup<DepositFormValues>
-                form={form}
-                label="Investment amount"
-                name="amount"
-                type="number"
-                placeholder="amount"
-                icon={HandCoins}
-              />
+            <FormFieldGroup<DepositFormValues>
+              form={form}
+              label="Investment amount"
+              name="amount"
+              type="number"
+              placeholder="amount"
+              icon={HandCoins}
+            />
 
-              <FormFieldGroup<DepositFormValues>
-                form={form}
-                label="Interest rate"
-                name="interest_rate"
-                type="number"
-                placeholder="interest rate"
-                icon={Percent}
-              />
-            </div>
+            <FormFieldGroup<DepositFormValues>
+              form={form}
+              label="Interest rate"
+              name="interest_rate"
+              type="number"
+              placeholder="interest rate"
+              icon={Percent}
+            />
           </FieldGroup>
 
           <DialogFooter className="mt-5">

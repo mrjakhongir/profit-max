@@ -1,4 +1,3 @@
-import { useAuth } from "@/features/auth/hooks/use-auth";
 import { FinancialActions } from "@/pages/(investor)/details/ui/financial-actions";
 import LoaderCenter from "@/shared/ui/custom/loader";
 import { Balance } from "@/widgets/balance";
@@ -11,28 +10,26 @@ import Investments from "./investments";
 
 const InvestorDetailsPage = () => {
   const { id: investorId } = useParams();
-  const { user } = useAuth();
 
   const {
     data: investor,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["investors", user?.id, investorId],
-    queryFn: () => getInvestorById(user?.id || "", investorId || ""),
-    enabled: !!user && !!investorId,
+    queryKey: ["investors", investorId],
+    queryFn: () => getInvestorById(investorId || ""),
+    enabled: !!investorId,
   });
 
   if (isLoading) return <LoaderCenter />;
 
   if (error) {
     toast.error(error.message);
-    console.error(error);
     return;
   }
 
   return (
-    <div className="mb-20 flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-25">
       <Header title={investor?.name} hasBackButton />
       <Balance />
       <Investments />

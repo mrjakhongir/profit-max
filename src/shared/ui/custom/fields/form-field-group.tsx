@@ -45,7 +45,9 @@ const FormFieldGroup = <T extends FieldValues>(properties: Properties<T>) => {
           id={name}
           type={type}
           placeholder={placeholder}
-          {...register(name, { valueAsNumber: true })}
+          {...register(name, {
+            valueAsNumber: type === "number",
+          })}
           aria-invalid={errors[name] ? "true" : "false"}
           aria-describedby={errors[name] ? `${name}-error` : ""}
           autoComplete="off"

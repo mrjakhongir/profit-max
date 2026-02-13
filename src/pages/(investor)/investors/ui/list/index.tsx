@@ -12,8 +12,8 @@ const List = () => {
   const [status] = useQueryState("status", { defaultValue: "active" });
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["investors", user?.id, status],
-    queryFn: () => getInvestors(user!.id, status === "active"),
+    queryKey: ["investors", status],
+    queryFn: () => getInvestors(status === "active"),
     enabled: !!user,
   });
 
