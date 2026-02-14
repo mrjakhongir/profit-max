@@ -86,7 +86,7 @@ export const MakeDeposit = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Deposit</DialogTitle>
-          <DialogDescription>Yeeeeeey, new deposit 🎉</DialogDescription>
+          <DialogDescription>Alhamdullilah, new deposit 🎉</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(createDeposit)}>

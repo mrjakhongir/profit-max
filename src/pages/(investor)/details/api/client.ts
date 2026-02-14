@@ -1,5 +1,6 @@
 import { supabaseClient } from "@/supabase-client";
 import { toast } from "sonner";
+import type { Balance } from "../model/types";
 
 export const getInvestorById = async (investorId: string) => {
   const { data, error } = await supabaseClient
@@ -40,4 +41,33 @@ export const getDeposits = async (investorId: string) => {
   }
 
   return data;
+};
+
+export async function getDepositHistory(depositId: string) {
+  const { data, error } = await supabaseClient.rpc("get_deposit_history", {
+    p_deposit_id: depositId,
+  });
+
+  if (error) {
+    toast.error(error.message);
+    console.error("Error fetching deposit history:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+export const getInvestorBalance = async (
+  investorId: string,
+): Promise<Balance> => {
+  const { data, error } = await supabaseClient
+    .rpc("get_investor_balance", { p_investor_id: investorId })
+    .single();
+
+  if (error) {
+    toast.error(error.message);
+    throw error;
+  }
+
+  return data as Balance;
 };

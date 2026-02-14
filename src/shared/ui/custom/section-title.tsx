@@ -8,7 +8,10 @@ type Properties = {
 const SectionTitle: React.FC<Properties> = ({ title, className }) => {
   return (
     <h2
-      className={cn("text-primary font-mono text-xl font-semibold", className)}
+      className={cn(
+        "text-primary font-primary text-xl font-semibold",
+        className,
+      )}
     >
       {title}
     </h2>
