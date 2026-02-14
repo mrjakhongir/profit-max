@@ -89,7 +89,7 @@ export const Spotting = () => {
     queryClient.invalidateQueries({ queryKey: ["deposits"] });
     toast.success("Withdrawal created");
     setOpen(false);
-    // reset();
+    reset();
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
