@@ -20,7 +20,7 @@ export const Header: React.FC<Properties> = ({
           </Link>
         )}
 
-        <h1 className="text-primary flex-1 text-center font-mono text-xl font-semibold">
+        <h1 className="text-primary font-primary flex-1 text-center text-xl font-semibold tracking-wide">
           {title}
         </h1>
       </Container>

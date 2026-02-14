@@ -1,11 +1,13 @@
-import { useDeposits } from "@/pages/(investor)/details/api/query";
-import type { Deposit } from "@/pages/(investor)/details/model/types";
+import { useAuth } from "@/features/auth/hooks/use-auth";
+import { queryClient } from "@/shared/config/query-client";
+import { uploadImage } from "@/shared/lib/upload-image";
 import { cn } from "@/shared/lib/utilities";
 import { Button } from "@/shared/ui/button";
 import DatePicker from "@/shared/ui/custom/date-picker";
 import Label from "@/shared/ui/custom/fields/field-label";
 import FormFieldGroup from "@/shared/ui/custom/fields/form-field-group";
-import LoaderCenter from "@/shared/ui/custom/loader";
+import { ImageUploader } from "@/shared/ui/custom/fields/input-image";
+import SelectDeposit from "@/shared/ui/custom/fields/select-deposit";
 import {
   Dialog,
   DialogClose,
@@ -16,14 +18,6 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import { Field, FieldDescription, FieldGroup } from "@/shared/ui/field";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/ui/select";
 import { supabaseClient } from "@/supabase-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BanknoteArrowUp, Loader2 } from "lucide-react";
@@ -36,23 +30,14 @@ import { withdrawalSchema, type WithdrawalFormValues } from "../model/schema";
 
 export const MakeWithdrawal = () => {
   const { id: investorId } = useParams();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
-
-  const { data: deposits, isLoading, error } = useDeposits(investorId || "");
 
   const form = useForm<WithdrawalFormValues>({
     resolver: zodResolver(withdrawalSchema),
     mode: "onChange",
     defaultValues: defaultValues,
   });
-
-  if (isLoading) return <LoaderCenter />;
-
-  if (error) {
-    toast.error(error.message);
-    console.error(error);
-    return;
-  }
 
   const {
     handleSubmit,
@@ -62,42 +47,44 @@ export const MakeWithdrawal = () => {
   } = form;
 
   const makeWithdrawal = async (values: WithdrawalFormValues) => {
-    if (!investorId) return;
+    if (!investorId || !user) return;
 
-    const payload = {
-      ...values,
-      investor_id: investorId,
-    };
+    // Upload image and get url
+    let imageUrl: string = "";
+    if (values.image) {
+      try {
+        const upload = await uploadImage(
+          user.id,
+          values.image,
+          "withdrawal-checks",
+        );
+        imageUrl = upload.publicUrl;
+      } catch {
+        toast.error("Image upload failed");
+        return;
+      }
+    }
 
-    const { error } = await supabaseClient
-      .from("withdrawals")
-      .insert([payload])
-      .select()
-      .single();
+    // Create withdrawal record
+    const { error } = await supabaseClient.rpc("create_withdrawal", {
+      p_deposit_id: values.deposit_id,
+      p_investor_id: investorId,
+      p_amount: values.amount,
+      p_date: values.date,
+      p_check_image_url: imageUrl,
+    });
 
     if (error) {
       toast.error(error.message);
       return;
     }
 
-    // Update deposit amount (reduce by withdrawal amount)
-    const { error: updateError } = await supabaseClient
-      .from("deposits")
-      .update({
-        amount: supabaseClient.rpc(`amount - ${values.amount}`),
-      })
-      .eq("id", values.deposit_id);
-
-    if (updateError) {
-      toast.error("Withdrawal created but failed to update deposit");
-      console.error(updateError);
-      return;
-    }
-
+    // Success
+    queryClient.invalidateQueries({ queryKey: ["deposits"] });
     toast.success("Withdrawal created");
+    setOpen(false);
+    reset();
   };
-
-  console.log(errors);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -105,7 +92,6 @@ export const MakeWithdrawal = () => {
         <Button
           size="lg"
           className="flex w-full items-center justify-center rounded-full"
-          disabled={deposits?.length === 0}
         >
           <BanknoteArrowUp />
           Withdraw
@@ -125,28 +111,11 @@ export const MakeWithdrawal = () => {
                 name="deposit_id"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    value={field.value || ""}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger className="w-45">
-                      {isLoading ? (
-                        <Loader2 className="animate-spin" />
-                      ) : (
-                        <SelectValue placeholder="Select deposit" />
-                      )}
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      <SelectGroup>
-                        {deposits?.map((deposit: Deposit) => (
-                          <SelectItem key={deposit.id} value={deposit.id}>
-                            ${deposit.amount} - {deposit.date}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                  <SelectDeposit
+                    investorId={investorId}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 )}
               />
 
@@ -188,6 +157,31 @@ export const MakeWithdrawal = () => {
               placeholder="amount"
               icon={BanknoteArrowUp}
             />
+
+            <Field data-invalid={!!errors.image} className="gap-1">
+              <Label content="Check image" />
+
+              <Controller
+                name="image"
+                control={control}
+                render={({ field }) => (
+                  <ImageUploader
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+
+              <FieldDescription
+                id="image-error"
+                className={cn(
+                  "text-xs",
+                  errors.image ? "visible" : "invisible",
+                )}
+              >
+                {errors?.image?.message}
+              </FieldDescription>
+            </Field>
           </FieldGroup>
 
           <DialogFooter className="mt-5">

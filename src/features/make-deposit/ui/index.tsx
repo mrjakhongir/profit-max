@@ -17,6 +17,7 @@ import {
 import { Field, FieldDescription, FieldGroup } from "@/shared/ui/field";
 import { supabaseClient } from "@/supabase-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { BanknoteArrowDown, HandCoins, Loader2, Percent } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -28,6 +29,7 @@ import { depositSchema, type DepositFormValues } from "../model/schema";
 export const MakeDeposit = () => {
   const { user } = useAuth();
   const { id: investorId } = useParams();
+  const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
 
@@ -66,6 +68,7 @@ export const MakeDeposit = () => {
 
     toast.success("Deposit created");
     reset();
+    queryClient.invalidateQueries({ queryKey: ["deposits"] });
     setOpen(false);
   };
 
