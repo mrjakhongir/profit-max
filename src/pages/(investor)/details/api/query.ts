@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getDepositHistory, getDeposits, getInvestorBalance } from "./client";
+import { getDepositHistory, getDeposits } from "./client";
 
 export const useDeposits = (investorId: string) => {
   return useQuery({
@@ -16,10 +16,3 @@ export const useDepositHistory = (depositId?: string) => {
     enabled: Boolean(depositId),
   });
 };
-
-export const useInvestorBalance = (investorId?: string) =>
-  useQuery({
-    queryKey: ["investor-balance", investorId],
-    queryFn: () => getInvestorBalance(investorId!),
-    enabled: Boolean(investorId),
-  });

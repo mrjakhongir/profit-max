@@ -1,3 +1,4 @@
+import { routeBuilders } from "@/shared/routes";
 import {
   AccordionContent,
   AccordionItem,
@@ -13,7 +14,7 @@ import {
   HandCoins,
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDepositHistory } from "../../api/query";
 import type { Deposit, Transaction } from "../../model/types";
 
@@ -22,6 +23,7 @@ type Properties = {
 };
 
 const TransactionItem: React.FC<Properties> = ({ item }) => {
+  const { id: investorId } = useParams();
   const [opened, setOpened] = useState(false);
   const { data: history, isLoading } = useDepositHistory(
     opened ? item.id : undefined,
@@ -92,7 +94,7 @@ const TransactionItem: React.FC<Properties> = ({ item }) => {
                 </ul>
               </div>
 
-              <Link to="">
+              <Link to={routeBuilders.deposits(investorId || "", item.id)}>
                 <Button size="sm" className="w-full rounded-lg">
                   <FileText />
                   Details

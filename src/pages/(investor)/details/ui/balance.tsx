@@ -1,9 +1,9 @@
+import { useInvestorBalance } from "@/entities/investor/api/query";
 import { formatNumber } from "@/shared/lib/format-number";
 import Container from "@/shared/ui/custom/container";
 import RectangleGradient from "@/shared/ui/custom/rectangle-gradient";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { useParams } from "react-router-dom";
-import { useInvestorBalance } from "../api/query";
 
 export const Balance = () => {
   const { id: investorId } = useParams();

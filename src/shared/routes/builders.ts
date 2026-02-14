@@ -1,3 +1,6 @@
 export const routeBuilders = {
-  investorDetails: (id: string) => `/investors/${id}`,
+  investorDetails: (investorId: string) => `/investors/${investorId}`,
+
+  deposits: (investorId: string, depositId: string) =>
+    `/investors/${investorId}/${depositId}`,
 } as const;

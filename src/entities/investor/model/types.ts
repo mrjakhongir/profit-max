@@ -11,3 +11,10 @@ export interface Investor {
   user_id: string;
   amount: number;
 }
+
+export interface InvestorBalance {
+  total_dividends: number;
+  total_withdrawn: number;
+  total_balance: number;
+  total_deposited: number;
+}

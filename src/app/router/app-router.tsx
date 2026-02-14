@@ -1,7 +1,5 @@
-import DividendsPage from "@/pages/(investor)/(deposit)/dividends/ui/dividends-page";
-import DepositLayout from "@/pages/(investor)/(deposit)/layout";
-import WithdrawalssPage from "@/pages/(investor)/(deposit)/withdrawal/ui/withdrawals-page";
 import AddInvestorPage from "@/pages/(investor)/add-investor/ui/add-investor-page";
+import DepositDetailsPage from "@/pages/(investor)/transactions/ui/deposit-details-page";
 import InvestorDetailsPage from "@/pages/(investor)/details/ui/investor-details-page";
 import InvestorsPage from "@/pages/(investor)/investors/ui/investors-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -15,27 +13,26 @@ const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      // ✅ public route
       { path: paths.login, element: <LoginPage /> },
 
-      // ✅ protected routes
       {
         element: <AuthLayout />,
         children: [
           { path: paths.home, element: <HomePage /> },
-          { path: paths.investors, element: <InvestorsPage /> },
-          { path: paths.addInvestor, element: <AddInvestorPage /> },
-          { path: paths.investorDetails, element: <InvestorDetailsPage /> },
+
           {
-            element: <DepositLayout />,
+            path: paths.investors.root,
             children: [
+              { index: true, element: <InvestorsPage /> },
+              { path: paths.investors.add, element: <AddInvestorPage /> },
+
               {
-                path: paths.deposits.dividends,
-                element: <DividendsPage />,
+                path: paths.investors.details,
+                element: <InvestorDetailsPage />,
               },
               {
-                path: paths.deposits.withdrawals,
-                element: <WithdrawalssPage />,
+                path: paths.investors.deposits,
+                element: <DepositDetailsPage />,
               },
             ],
           },

@@ -22,7 +22,7 @@ const InvestorsPage = () => {
       </>
 
       <Header title="Investors" />
-      <Tabs items={tabs} />
+      <Tabs items={tabs} paramKey="status" defaultValue="active" />
       <List />
       <AddInvestorButton />
     </div>

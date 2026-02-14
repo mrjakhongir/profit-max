@@ -18,10 +18,3 @@ export interface Transaction {
   image: string;
   type: string;
 }
-
-export interface Balance {
-  total_dividends: number;
-  total_withdrawn: number;
-  total_balance: number;
-  total_deposited: number;
-}

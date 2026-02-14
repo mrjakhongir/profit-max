@@ -1,27 +1,5 @@
 import { supabaseClient } from "@/supabase-client";
 import { toast } from "sonner";
-import type { Balance } from "../model/types";
-
-export const getInvestorById = async (investorId: string) => {
-  const { data, error } = await supabaseClient
-    .from("investors")
-    .select("*")
-    .eq("id", investorId)
-    .single();
-
-  if (error) {
-    toast.error(error.message);
-    console.error("Error fetching investor:", error);
-    throw error;
-  }
-
-  if (!data) {
-    toast.error("Investor not found");
-    throw new Error("Investor not found");
-  }
-
-  return data;
-};
 
 export const getDeposits = async (investorId: string) => {
   const { data, error } = await supabaseClient
@@ -56,18 +34,3 @@ export async function getDepositHistory(depositId: string) {
 
   return data;
 }
-
-export const getInvestorBalance = async (
-  investorId: string,
-): Promise<Balance> => {
-  const { data, error } = await supabaseClient
-    .rpc("get_investor_balance", { p_investor_id: investorId })
-    .single();
-
-  if (error) {
-    toast.error(error.message);
-    throw error;
-  }
-
-  return data as Balance;
-};

@@ -6,16 +6,22 @@ import type { TabItem } from "../model/types";
 
 type Properties = {
   items: TabItem[];
+  paramKey: string;
+  defaultValue: string;
 };
 
-export const Tabs: React.FC<Properties> = ({ items }) => {
-  const [status, setStatus] = useQueryState("status", {
-    defaultValue: "active",
+export const Tabs: React.FC<Properties> = ({
+  items,
+  paramKey,
+  defaultValue,
+}) => {
+  const [tab, setTab] = useQueryState(paramKey, {
+    defaultValue,
   });
 
   const activeIndex = useMemo(
-    () => items.findIndex((item) => item.value === status),
-    [status, items],
+    () => items.findIndex((item) => item.value === tab),
+    [tab, items],
   );
 
   return (
@@ -33,10 +39,10 @@ export const Tabs: React.FC<Properties> = ({ items }) => {
         {items.map((item) => (
           <Button
             key={item.value}
-            onClick={() => setStatus(item.value)}
+            onClick={() => setTab(item.value)}
             variant="ghost"
             className={`relative z-30 flex-1 rounded-full tracking-wider ${
-              status === item.value
+              tab === item.value
                 ? "text-primary-foreground"
                 : "text-muted-foreground"
             }`}

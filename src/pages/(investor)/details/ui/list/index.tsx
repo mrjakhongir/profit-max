@@ -17,7 +17,7 @@ const TransactionsList = () => {
 
   return (
     <ul className="flex flex-col">
-      <Accordion type="single" collapsible>
+      <Accordion type="multiple">
         {deposits?.map((deposit) => (
           <TransactionItem key={deposit.id} item={deposit} />
         ))}

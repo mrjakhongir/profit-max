@@ -1,21 +1,14 @@
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import { useInvestors } from "@/entities/investor/api/query";
 import Container from "@/shared/ui/custom/container";
 import EmptyState from "@/shared/ui/custom/empty-state";
 import LoaderCenter from "@/shared/ui/custom/loader";
-import { useQuery } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
-import { getInvestors } from "../../api/client";
 import ListItem from "./item";
 
 const List = () => {
-  const { user } = useAuth();
   const [status] = useQueryState("status", { defaultValue: "active" });
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["investors", status],
-    queryFn: () => getInvestors(status === "active"),
-    enabled: !!user,
-  });
+  const { data, isLoading, error } = useInvestors(status);
 
   if (isLoading) return <LoaderCenter />;
   if (data?.length === 0 && !error && !isLoading) return <EmptyState />;
