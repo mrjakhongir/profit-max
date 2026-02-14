@@ -5,4 +5,8 @@ export const paths = {
   investorDetails: "/investors/:id",
   addInvestor: "/investors/add",
   transactions: "/transactions",
+  deposits: {
+    dividends: "/investors/deposits/",
+    withdrawals: "/investors/deposits/withdraw",
+  },
 } as const;
