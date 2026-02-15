@@ -1,3 +1,4 @@
+import { useCreateInvestor } from "@/entities/investor/api/query";
 import { cn } from "@/shared/lib/utilities";
 import { Button } from "@/shared/ui/button";
 import CardNumberInput from "@/shared/ui/custom/card-number-input";
@@ -12,10 +13,9 @@ import {
   FieldLabel,
 } from "@/shared/ui/field";
 import { Textarea } from "@/shared/ui/textarea";
-import { supabaseClient } from "@/supabase-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { HandCoins, Loader2, Percent, UserRoundPlus } from "lucide-react";
+import { Loader2, UserRoundPlus } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -36,33 +36,28 @@ export const AddInvestor = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     control,
     reset,
   } = form;
 
-  const addNewInvestor = async (values: AddInvestorValues) => {
-    const { error } = await supabaseClient.rpc(
-      "create_investor_with_initial_deposit",
-      {
-        p_name: values.name,
-        p_id_number: values.id_number,
-        p_contract_date: values.contract_date.toISOString().split("T")[0],
-        p_interest_rate: values.interest_rate,
-        p_card_number: maskCardNumber(values.card_number),
-        p_amount: values.amount,
-        p_description: values.description || "",
-      },
-    );
+  const { mutate: createInvestor, isPending } = useCreateInvestor();
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+  const addNewInvestor = async (values: AddInvestorValues) => {
+    const payload = {
+      ...values,
+      card_number: maskCardNumber(values.card_number),
+    };
+
+    createInvestor(payload);
+
     toast.success("Investor created successfully 🎉");
     reset();
-    navigate("/investors");
     queryClient.invalidateQueries({ queryKey: ["investors"] });
+
+    setTimeout(() => {
+      navigate("/investors");
+    }, 1000);
   };
 
   return (
@@ -159,24 +154,6 @@ export const AddInvestor = () => {
               </FieldDescription>
             </Field>
 
-            <FormFieldGroup<AddInvestorValues>
-              form={form}
-              label="Investment amount"
-              name="amount"
-              type="number"
-              placeholder="Enter an amount"
-              icon={HandCoins}
-            />
-
-            <FormFieldGroup<AddInvestorValues>
-              form={form}
-              label="Interest rate"
-              name="interest_rate"
-              type="number"
-              placeholder="Enter an interest rate"
-              icon={Percent}
-            />
-
             <Field>
               <FieldLabel htmlFor="description">Description</FieldLabel>
               <Textarea
@@ -195,7 +172,7 @@ export const AddInvestor = () => {
                 className="flex w-full items-center justify-center rounded-full"
                 type="submit"
               >
-                {isSubmitting ? (
+                {isPending ? (
                   <span className="flex items-center gap-2">
                     <Loader2 className="animate-spin" />
                     Loading...

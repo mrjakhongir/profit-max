@@ -1,3 +1,4 @@
+import type { AddInvestorValues } from "@/features/add-investor/model/schema";
 import { supabaseClient } from "@/supabase-client";
 import { toast } from "sonner";
 import type { Investor, InvestorBalance } from "../model/types";
@@ -49,4 +50,30 @@ export const getInvestorBalance = async (
   }
 
   return data as InvestorBalance;
+};
+
+export const createInvestor = async (values: AddInvestorValues) => {
+  const {
+    data: { user },
+  } = await supabaseClient.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  const { error } = await supabaseClient
+    .from("investors")
+    .insert({
+      user_id: user.id,
+      name: values.name,
+      id_number: values.id_number,
+      contract_date: values.contract_date,
+      card_number: values.card_number,
+      description: values.description || "",
+    })
+    .select()
+    .single();
+
+  if (error) {
+    toast.error(error.message);
+    throw error;
+  }
 };

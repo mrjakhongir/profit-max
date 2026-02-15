@@ -22,7 +22,15 @@ const ListItem: React.FC<Properties> = ({ item }) => {
             </div>
           </div>
 
-          <p className="text-primary/10 font-serif text-4xl">${item.amount}</p>
+          {item.amount ? (
+            <p className="text-primary/10 font-serif text-4xl">
+              ${item.amount}
+            </p>
+          ) : (
+            <span className="text-muted-foreground text-sm">
+              No deposits yet
+            </span>
+          )}
         </div>
         <ChevronRight />
       </Link>

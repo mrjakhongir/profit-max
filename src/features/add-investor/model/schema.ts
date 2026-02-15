@@ -3,8 +3,6 @@ import { z } from "zod";
 export const investorSchema = z.object({
   name: z.string().min(3, "Fullname must be at least 3 characters"),
   contract_date: z.date(),
-  interest_rate: z.number().min(1, "Interest rate must be at least 1%"),
-  amount: z.number().min(100, "Amount must be at least $100"),
   card_number: z
     .string()
     .min(1, "Card number is required")
