@@ -44,7 +44,10 @@ const SelectDeposit: React.FC<Properties> = ({
           {deposits?.map((deposit: Deposit) => (
             <SelectItem key={deposit.id} value={deposit.id}>
               <span className="font-mono tracking-wide">${deposit.amount}</span>{" "}
-              /<span className="text-muted-foreground">{deposit.date}</span>
+              /<span className="text-muted-foreground">{deposit.date}</span>/
+              <span className="text-muted-foreground">
+                {deposit.interest_rate}%
+              </span>
             </SelectItem>
           ))}
         </SelectGroup>

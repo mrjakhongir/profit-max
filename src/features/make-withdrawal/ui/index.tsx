@@ -66,13 +66,16 @@ export const MakeWithdrawal = () => {
     }
 
     // Create withdrawal record
-    const { error } = await supabaseClient.rpc("create_withdrawal", {
-      p_deposit_id: values.deposit_id,
-      p_investor_id: investorId,
-      p_amount: values.amount,
-      p_date: values.date,
-      p_check_image_url: imageUrl,
-    });
+    const { error } = await supabaseClient.rpc(
+      "create_withdrawal_transaction",
+      {
+        p_deposit_id: values.deposit_id,
+        p_investor_id: investorId,
+        p_amount: values.amount,
+        p_date: values.date,
+        p_image: imageUrl,
+      },
+    );
 
     if (error) {
       toast.error(error.message);
@@ -81,6 +84,8 @@ export const MakeWithdrawal = () => {
 
     // Success
     queryClient.invalidateQueries({ queryKey: ["deposits"] });
+    queryClient.invalidateQueries({ queryKey: ["investor-balance"] });
+    queryClient.invalidateQueries({ queryKey: ["investors-info"] });
     toast.success("Withdrawal created");
     setOpen(false);
     reset();

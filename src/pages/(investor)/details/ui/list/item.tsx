@@ -82,15 +82,19 @@ const TransactionItem: React.FC<Properties> = ({ item }) => {
                   <BanknoteArrowUp size={18} /> Withdrawal
                 </h4>
                 <ul className="flex flex-col gap-1">
-                  {!withdrawals || withdrawals.length === 0
-                    ? "No withdrawals yet"
-                    : withdrawals?.map((item: Transaction) => (
-                        <InfoItem
-                          key={item.id}
-                          label={item.date}
-                          value={`$${item.amount}`}
-                        />
-                      ))}
+                  {!withdrawals || withdrawals.length === 0 ? (
+                    <span className="text-muted-foreground">
+                      No withdrawals yet
+                    </span>
+                  ) : (
+                    withdrawals?.map((item: Transaction) => (
+                      <InfoItem
+                        key={item.id}
+                        label={item.date}
+                        value={`$${item.amount}`}
+                      />
+                    ))
+                  )}
                 </ul>
               </div>
 

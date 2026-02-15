@@ -57,7 +57,7 @@ export const Balance = () => {
       <img
         src="/mask-left.png"
         alt="mask"
-        className="absolute top-1/4 left-0 z-0"
+        className="absolute top-0 left-0 z-0"
       />
     </div>
   );

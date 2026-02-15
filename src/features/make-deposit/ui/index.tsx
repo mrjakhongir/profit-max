@@ -1,4 +1,3 @@
-import { useAuth } from "@/features/auth/hooks/use-auth";
 import { cn } from "@/shared/lib/utilities";
 import { Button } from "@/shared/ui/button";
 import DatePicker from "@/shared/ui/custom/date-picker";
@@ -27,7 +26,6 @@ import { defaultValues } from "../model/constants";
 import { depositSchema, type DepositFormValues } from "../model/schema";
 
 export const MakeDeposit = () => {
-  const { user } = useAuth();
   const { id: investorId } = useParams();
   const queryClient = useQueryClient();
 
@@ -47,19 +45,14 @@ export const MakeDeposit = () => {
   } = form;
 
   const createDeposit = async (values: DepositFormValues) => {
-    if (!user || !investorId) return;
+    if (!investorId) return;
 
-    const payload = {
-      ...values,
-      investor_id: investorId,
-      user_id: user.id,
-    };
-
-    const { error } = await supabaseClient
-      .from("deposits")
-      .insert([payload])
-      .select()
-      .single();
+    const { error } = await supabaseClient.rpc("create_deposit", {
+      p_investor_id: investorId,
+      p_amount: values.amount,
+      p_date: values.date,
+      p_interest_rate: values.interest_rate,
+    });
 
     if (error) {
       toast.error(error.message);
@@ -68,7 +61,10 @@ export const MakeDeposit = () => {
 
     toast.success("Deposit created");
     reset();
+
     queryClient.invalidateQueries({ queryKey: ["deposits"] });
+    queryClient.invalidateQueries({ queryKey: ["investor-balance"] });
+    queryClient.invalidateQueries({ queryKey: ["investors-info"] });
     setOpen(false);
   };
 

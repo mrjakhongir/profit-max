@@ -1,10 +1,9 @@
 import { getInvestorById } from "@/entities/investor/api/client";
-import { formatNumber } from "@/shared/lib/format-number";
 import Container from "@/shared/ui/custom/container";
 import InfoItem from "@/shared/ui/custom/info-item";
-import LoaderCenter from "@/shared/ui/custom/loader";
 import RectangleGlass from "@/shared/ui/custom/rectangle-glass";
 import SectionTitle from "@/shared/ui/custom/section-title";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Info } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -18,12 +17,17 @@ const InvestorInfo = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["investors", investorId],
+    queryKey: ["investors-info", investorId],
     queryFn: () => getInvestorById(investorId || ""),
     enabled: !!investorId,
   });
 
-  if (isLoading) return <LoaderCenter />;
+  if (isLoading)
+    return (
+      <Container>
+        <Skeleton className="bg-secondary h-61 rounded-2xl" />
+      </Container>
+    );
 
   if (error) {
     toast.error(error.message);
@@ -42,10 +46,6 @@ const InvestorInfo = () => {
           <SectionTitle title={investor.name} />
           <InfoItem label="ID:" value={investor.id_number} />
           <InfoItem label="Added:" value={investor.contract_date} />
-          <InfoItem
-            label="Invested:"
-            value={`$${formatNumber(investor.amount)}`}
-          />
           <InfoItem
             label="Interest rate:"
             value={`${investor.interest_rate}%`}

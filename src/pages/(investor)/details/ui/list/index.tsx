@@ -12,7 +12,7 @@ const TransactionsList = () => {
   if (isLoading) return <LoaderCenter className="mt-5" />;
 
   if (deposits?.length === 0 && !error && !isLoading) {
-    return <EmptyState />;
+    return <EmptyState className="mt-2 text-xl" size={60} />;
   }
 
   return (
