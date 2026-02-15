@@ -1,6 +1,6 @@
+import type { Investor } from "@/entities/investor/model/types";
 import { CalendarCheck2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { Investor } from "../../model/types";
 
 type Properties = {
   item: Investor;
