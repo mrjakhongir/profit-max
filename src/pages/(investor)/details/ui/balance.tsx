@@ -19,7 +19,7 @@ export const Balance = () => {
   }
 
   return (
-    <div className="relative">
+    <section className="relative">
       <Container>
         <div className="glass-bg border-accent/10 relative z-20 overflow-hidden rounded-2xl border">
           <RectangleGradient>
@@ -59,6 +59,6 @@ export const Balance = () => {
         alt="mask"
         className="absolute top-0 left-0 z-0"
       />
-    </div>
+    </section>
   );
 };

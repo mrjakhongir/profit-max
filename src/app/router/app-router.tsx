@@ -1,9 +1,9 @@
 import AddInvestorPage from "@/pages/(investor)/add-investor/ui/add-investor-page";
-import DepositDetailsPage from "@/pages/(investor)/transactions/ui/deposit-details-page";
 import InvestorDetailsPage from "@/pages/(investor)/details/ui/investor-details-page";
 import InvestorsPage from "@/pages/(investor)/investors/ui/investors-page";
+import DepositDetailsPage from "@/pages/(investor)/transactions/ui/deposit-details-page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "../../pages/home/home";
+import HomePage from "../../pages/home/ui/home-page";
 import LoginPage from "../../pages/login/login-page";
 import { paths } from "../../shared/routes";
 import { AppLayout } from "../layout/app-layout";
