@@ -14,8 +14,8 @@ const DepositDetailsItem: React.FC<Properties> = ({ item }) => {
           <h3 className="text-accent font-serif text-2xl font-medium">
             ${item.amount}
           </h3>
-          <div className="text-muted-foreground/70 flex items-center gap-1 font-medium">
-            <CalendarCheck2 size={14} />
+          <div className="text-muted-foreground/70 flex items-center gap-1">
+            <CalendarCheck2 size={14} strokeWidth={2.3} />
             <span className="text-sm">{item.date}</span>
           </div>
         </div>

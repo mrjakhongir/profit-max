@@ -119,7 +119,9 @@ export const MakeWithdrawal = () => {
                   <SelectDeposit
                     investorId={investorId}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(deposit) => {
+                      field.onChange(deposit.id);
+                    }}
                   />
                 )}
               />
@@ -145,13 +147,6 @@ export const MakeWithdrawal = () => {
                   <DatePicker value={field.value} onChange={field.onChange} />
                 )}
               />
-
-              <FieldDescription
-                id="date-error"
-                className={cn("text-xs", errors.date ? "visible" : "invisible")}
-              >
-                {errors?.date?.message}
-              </FieldDescription>
             </Field>
 
             <FormFieldGroup<WithdrawalFormValues>
