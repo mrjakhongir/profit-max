@@ -2,7 +2,7 @@ import { startOfDay } from "date-fns";
 
 export const defaultValues = {
   deposit_id: "",
-  amount: 1000,
+  amount: 0,
   date: startOfDay(new Date()),
   image: undefined,
 };

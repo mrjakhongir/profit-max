@@ -46,10 +46,6 @@ const InvestorInfo = () => {
           <SectionTitle title={investor.name} />
           <InfoItem label="ID:" value={investor.id_number} />
           <InfoItem label="Added:" value={investor.contract_date} />
-          <InfoItem
-            label="Interest rate:"
-            value={`${investor.interest_rate}%`}
-          />
           <InfoItem label="Card:" value={`${investor.card_number}`} />
 
           {investor.description && (

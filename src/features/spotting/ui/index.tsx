@@ -1,3 +1,4 @@
+import { getDividendAmount } from "@/entities/deposit/lib/get-dividend-amount";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { queryClient } from "@/shared/config/query-client";
 import { uploadImage } from "@/shared/lib/upload-image";
@@ -22,7 +23,7 @@ import { Field, FieldDescription, FieldGroup } from "@/shared/ui/field";
 import { supabaseClient } from "@/supabase-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HandCoins, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -45,6 +46,9 @@ export const Spotting = () => {
     control,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
+    resetField,
+    watch,
   } = form;
 
   const makeSpotting = async (values: SpottingFormValues) => {
@@ -87,10 +91,17 @@ export const Spotting = () => {
 
     // Success
     queryClient.invalidateQueries({ queryKey: ["deposits"] });
-    toast.success("Withdrawal created");
+    toast.success("Spotting created");
     setOpen(false);
     reset();
   };
+
+  const date = watch("date");
+
+  useEffect(() => {
+    resetField("deposit_id");
+    resetField("amount");
+  }, [date]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -106,32 +117,6 @@ export const Spotting = () => {
 
         <form onSubmit={handleSubmit(makeSpotting)}>
           <FieldGroup className="gap-3">
-            <Field data-invalid={!!errors.deposit_id} className="gap-1">
-              <Label content="Deposit" />
-
-              <Controller
-                name="deposit_id"
-                control={control}
-                render={({ field }) => (
-                  <SelectDeposit
-                    investorId={investorId}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-
-              <FieldDescription
-                id="deposit_id-error"
-                className={cn(
-                  "text-xs",
-                  errors.deposit_id ? "visible" : "invisible",
-                )}
-              >
-                {errors?.deposit_id?.message}
-              </FieldDescription>
-            </Field>
-
             <Field data-invalid={!!errors.date} className="gap-1">
               <Label content="Spotting date" />
 
@@ -142,13 +127,34 @@ export const Spotting = () => {
                   <DatePicker value={field.value} onChange={field.onChange} />
                 )}
               />
+            </Field>
 
-              <FieldDescription
-                id="date-error"
-                className={cn("text-xs", errors.date ? "visible" : "invisible")}
-              >
-                {errors?.date?.message}
-              </FieldDescription>
+            <Field data-invalid={!!errors.deposit_id} className="gap-1">
+              <Label content="Deposit" />
+
+              <Controller
+                name="deposit_id"
+                control={control}
+                render={({ field }) => (
+                  <SelectDeposit
+                    investorId={investorId}
+                    value={field.value}
+                    onChange={(deposit) => {
+                      field.onChange(deposit.id);
+
+                      setValue(
+                        "amount",
+                        getDividendAmount(
+                          date,
+                          deposit.date,
+                          deposit.initial_dividend,
+                          deposit.monthly_dividend,
+                        ),
+                      );
+                    }}
+                  />
+                )}
+              />
             </Field>
 
             <FormFieldGroup<SpottingFormValues>

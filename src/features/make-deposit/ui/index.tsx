@@ -22,6 +22,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { calculateDividends } from "../lib/calculate-dividends";
 import { defaultValues } from "../model/constants";
 import { depositSchema, type DepositFormValues } from "../model/schema";
 
@@ -42,16 +43,25 @@ export const MakeDeposit = () => {
     control,
     formState: { errors, isSubmitting },
     reset,
+    watch,
   } = form;
 
   const createDeposit = async (values: DepositFormValues) => {
     if (!investorId) return;
+
+    const { monthly_dividend, initial_dividend } = calculateDividends(
+      values.amount,
+      values.interest_rate,
+      values.date,
+    );
 
     const { error } = await supabaseClient.rpc("create_deposit", {
       p_investor_id: investorId,
       p_amount: values.amount,
       p_date: values.date,
       p_interest_rate: values.interest_rate,
+      p_monthly_dividend: monthly_dividend,
+      p_initial_dividend: initial_dividend,
     });
 
     if (error) {
@@ -67,6 +77,16 @@ export const MakeDeposit = () => {
     queryClient.invalidateQueries({ queryKey: ["investors-info"] });
     setOpen(false);
   };
+
+  const amount = watch("amount");
+  const date = watch("date");
+  const interestRate = watch("interest_rate");
+
+  const { initial_dividend, monthly_dividend } = calculateDividends(
+    amount,
+    interestRate,
+    date,
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -124,6 +144,16 @@ export const MakeDeposit = () => {
               icon={Percent}
             />
           </FieldGroup>
+
+          <div className="border-accent/20 mt-2 rounded-xl border p-2">
+            <p className="text-muted-foreground text-sm">
+              Investor will get{" "}
+              <span className="text-accent">${initial_dividend}</span> initial
+              dividend and{" "}
+              <span className="text-accent">${monthly_dividend}</span> monthly
+              dividend
+            </p>
+          </div>
 
           <DialogFooter className="mt-5">
             <div className="flex gap-2">

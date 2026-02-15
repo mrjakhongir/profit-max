@@ -6,6 +6,8 @@ export interface Deposit {
   user_id: string;
   investor_id: string;
   is_active: boolean;
+  initial_dividend: number;
+  monthly_dividend: number;
 }
 
 export interface Transaction {
